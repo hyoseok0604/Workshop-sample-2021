@@ -7,7 +7,9 @@
     <string name="title">Title</string>
     <string name="description">Description</string>
     <string name="due_date">Due Date</string>
+    <string name="change_due_date">Change Due Date / Time</string>
     <string name="finished">Finished</string>
+    <string name="not_finished">Not Finished</string>
     <string name="edit">Edit</string>
     <string name="x">x</string>
 

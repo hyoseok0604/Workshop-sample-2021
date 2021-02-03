@@ -12,7 +12,8 @@ class TodoDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DB_NAME, 
         private val TABLE_NAME = "todo"
         private val ID = "id"
         private val TITLE = "Title"
-        private val DESC = "Desciption"
+        private val DESC = "Description"
+        private val DUE = "Due"
         private val FIN = "Finished"
     }
 
@@ -23,6 +24,7 @@ class TodoDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DB_NAME, 
                     "($ID INTEGER PRIMARY KEY," +
                     "$TITLE TEXT," +
                     "$DESC TEXT," +
+                    "$DUE TEXT," +
                     "$FIN INTEGER DEFAULT 0)"
 
         db?.execSQL(createTable)
@@ -37,6 +39,7 @@ class TodoDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DB_NAME, 
 
         values.put(TITLE, todo.title)
         values.put(DESC, todo.description)
+        values.put(DUE, todo.due)
         values.put(FIN, booleanToInteger(todo.finished))
 
         val _success = db.insert(TABLE_NAME, null, values)
@@ -78,6 +81,7 @@ class TodoDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DB_NAME, 
         val cursor = db.rawQuery(selectALLQuery, null)
         var title : String
         var desciption : String
+        var due : String
         var finished : Boolean
 
         if (cursor != null) {
@@ -85,9 +89,10 @@ class TodoDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DB_NAME, 
                 do {
                     title = cursor.getString(cursor.getColumnIndex(TITLE))
                     desciption = cursor.getString(cursor.getColumnIndex(DESC))
+                    due = cursor.getString(cursor.getColumnIndex(DUE))
                     finished = integerToBoolean(cursor.getInt(cursor.getColumnIndex(FIN)))
 
-                    allTodo.add(Todo(title, desciption, finished))
+                    allTodo.add(Todo(title, desciption, due, finished))
                 } while (cursor.moveToNext())
             }
         }

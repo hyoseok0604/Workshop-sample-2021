@@ -53,12 +53,22 @@
         android:layout_marginTop="20dp"/>
 
     <TextView
+        android:id="@+id/todoDue"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginTop="10dp" />
+    <!-- android:text="YYYY-MM-DD HH:MM" -->
+
+    <Button
+        android:id="@+id/todoChangeDue"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
         android:layout_marginTop="10dp"
-        android:text="직접 추가해 보세요." />
+        android:text="@string/change_due_date" />
 
 
     <TextView
@@ -68,14 +78,25 @@
         android:layout_marginStart="20dp"
         android:layout_marginTop="20dp"/>
 
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="horizontal"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
-        android:layout_marginTop="10dp"
-        android:text="직접 추가해 보세요." />
+        android:layout_marginTop="10dp">
 
+        <CheckBox
+            android:id="@+id/todoFinishedCheckBox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
 
+        <TextView
+            android:id="@+id/todoFinishedText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/finished"/>
+
+    </LinearLayout>
 
 </LinearLayout>

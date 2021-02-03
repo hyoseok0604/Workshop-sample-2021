@@ -1,5 +1,8 @@
 package page.chungjungsoo.to_dosample
 
+import android.annotation.SuppressLint
+import android.app.DatePickerDialog
+import android.app.TimePickerDialog
 import android.content.Context
 import android.content.DialogInterface
 import android.os.Build
@@ -11,17 +14,18 @@ import android.text.TextWatcher
 import android.view.View
 import android.view.WindowInsetsController
 import android.view.inputmethod.InputMethodManager
-import android.widget.EditText
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import kotlinx.android.synthetic.main.activity_main.*
 import page.chungjungsoo.to_dosample.todo.Todo
 import page.chungjungsoo.to_dosample.todo.TodoDatabaseHelper
 import page.chungjungsoo.to_dosample.todo.TodoListViewAdapter
+import java.util.*
 
 class MainActivity : AppCompatActivity() {
     var dbHandler : TodoDatabaseHelper? = null
+    @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         // Set content view - loads activity_main.xml
@@ -56,7 +60,10 @@ class MainActivity : AppCompatActivity() {
 
             // Get elements from custom dialog layout (add_todo_dialog.xml)
             val titleToAdd = dialogView.findViewById<EditText>(R.id.todoTitle)
-            val desciptionToAdd = dialogView.findViewById<EditText>(R.id.todoDescription)
+            val descriptionToAdd = dialogView.findViewById<EditText>(R.id.todoDescription)
+            val dueToAdd = dialogView.findViewById<TextView>(R.id.todoDue)
+            val changeDueBtn = dialogView.findViewById<Button>(R.id.todoChangeDue)
+            val finishedToAdd = dialogView.findViewById<CheckBox>(R.id.todoFinishedCheckBox)
 
             // Add InputMethodManager for auto keyboard popup
             val ime = applicationContext.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
@@ -67,6 +74,37 @@ class MainActivity : AppCompatActivity() {
             // Show keyboard when AlertDialog is inflated
             ime.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0)
 
+            val c : Calendar = Calendar.getInstance()
+
+            var year = c.get(Calendar.YEAR)
+            var month = c.get(Calendar.MONTH)
+            var day = c.get(Calendar.DAY_OF_MONTH)
+            var hour = c.get(Calendar.HOUR_OF_DAY)
+            var minute = c.get(Calendar.MINUTE)
+    
+            dueToAdd.text = "%04d-%02d-%02d %02d:%02d".format(year, month, day, hour, minute)
+
+            changeDueBtn.setOnClickListener {
+                val timePickerDialog = TimePickerDialog(this,
+                    { _, newHour, newMinute ->
+                        hour = newHour
+                        minute = newMinute
+
+                        dueToAdd.text = "%04d-%02d-%02d %02d:%02d".format(year, month, day, hour, minute)
+                    }, hour, minute, true
+                )
+
+                val datePickerDialog = DatePickerDialog(this,
+                    { _, newYear, newMonth, newDay ->
+                        year = newYear
+                        month = newMonth
+                        day = newDay
+
+                        timePickerDialog.show()
+                    }, year, month, day)
+
+                datePickerDialog.show()
+            }
 
             // Add positive button and negative button for AlertDialog.
             // Pressing the positive button: Add data to the database and also add them in listview and update.
@@ -77,8 +115,9 @@ class MainActivity : AppCompatActivity() {
                         // Add item to the database
                         val todo = Todo(
                             titleToAdd.text.toString(),
-                            desciptionToAdd.text.toString(),
-                            false
+                            descriptionToAdd.text.toString(),
+                            dueToAdd.text.toString(),
+                            finishedToAdd.isChecked
                         )
                         dbHandler!!.addTodo(todo)
 
