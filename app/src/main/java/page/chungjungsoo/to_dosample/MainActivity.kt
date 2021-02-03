@@ -97,7 +97,7 @@ class MainActivity : AppCompatActivity() {
             val c : Calendar = Calendar.getInstance()
         
             var year = c.get(Calendar.YEAR)
-            var month = c.get(Calendar.MONTH)
+            var month = c.get(Calendar.MONTH) + 1
             var day = c.get(Calendar.DAY_OF_MONTH)
             var hour = c.get(Calendar.HOUR_OF_DAY)
             var minute = c.get(Calendar.MINUTE)
@@ -121,7 +121,7 @@ class MainActivity : AppCompatActivity() {
                             day = newDay
                         
                             timePickerDialog.show()
-                        }, year, month, day)
+                        }, year, month - 1, day)
             
                 datePickerDialog.show()
             }
