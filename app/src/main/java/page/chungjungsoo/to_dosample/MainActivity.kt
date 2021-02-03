@@ -22,11 +22,8 @@ import androidx.core.content.ContextCompat
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.IdpResponse
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import kotlinx.android.synthetic.main.activity_main.*
-import page.chungjungsoo.to_dosample.todo.Todo
-import page.chungjungsoo.to_dosample.todo.TodoDatabaseHelper
-import page.chungjungsoo.to_dosample.todo.TodoListViewAdapter
+import page.chungjungsoo.to_dosample.todo.*
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
@@ -68,8 +65,11 @@ class MainActivity : AppCompatActivity() {
     }
     
     private fun init() {
+
+//        Toast.makeText(this, FirebaseAuth.getInstance().currentUser!!.uid, Toast.LENGTH_LONG).show()
+        
         // Put data with custom listview adapter
-//        todoList.adapter = TodoListViewAdapter(this, R.layout.todo_item, todolist)
+        todoList.adapter = read(this)
         todoList.emptyView = helpText
     
         // Onclick listener for add button
@@ -132,14 +132,18 @@ class MainActivity : AppCompatActivity() {
             val add = builder.setView(dialogView)
                     .setPositiveButton("추가") { _, _ ->
                         if (!TextUtils.isEmpty(titleToAdd.text.trim())) {
+                            val tmpAdapter = todoList.adapter as TodoListViewAdapter
                             // Add item to the database
                             val todo = Todo(
+                                    if(tmpAdapter.count == 0) 0
+                                    else tmpAdapter.getItem(tmpAdapter.count - 1)!!.uid!! + 1,
                                     titleToAdd.text.toString(),
                                     descriptionToAdd.text.toString(),
                                     dueToAdd.text.toString(),
                                     finishedToAdd.isChecked
                             )
-                            // dbHandler!!.addTodo(todo)
+
+                            write(todo)
                         
                             // Add them to listview and update.
                             (todoList.adapter as TodoListViewAdapter).add(todo)

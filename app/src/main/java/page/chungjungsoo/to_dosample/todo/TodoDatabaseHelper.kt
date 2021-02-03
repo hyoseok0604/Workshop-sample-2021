@@ -92,7 +92,7 @@ class TodoDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DB_NAME, 
                     due = cursor.getString(cursor.getColumnIndex(DUE))
                     finished = integerToBoolean(cursor.getInt(cursor.getColumnIndex(FIN)))
 
-                    allTodo.add(Todo(title, desciption, due, finished))
+                    allTodo.add(Todo(0, title, desciption, due, finished))
                 } while (cursor.moveToNext())
             }
         }

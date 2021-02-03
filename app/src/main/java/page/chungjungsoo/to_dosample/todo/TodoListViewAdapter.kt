@@ -89,26 +89,29 @@ class TodoListViewAdapter (context: Context, var resource: Int, var items: Mutab
             builder.setView(dialogView)
                 .setPositiveButton("수정") { _, _ ->
                     val tmp = Todo(
+                        items[position].uid,
                         titleToAdd.text.toString(),
                         descriptionToAdd.text.toString(),
                         dueToAdd.text.toString(),
                         finishedToAdd.isChecked
                     )
 
-                    val result = db.updateTodo(tmp, position)
-                    if (result) {
-                        todo.title = titleToAdd.text.toString()
-                        todo.description = descriptionToAdd.text.toString()
-                        todo.due = dueToAdd.text.toString()
-                        todo.finished = finishedToAdd.isChecked
-                        
-                        notifyDataSetChanged()
-                        ime.hideSoftInputFromWindow(titleToAdd.windowToken, 0)
-                    }
-                    else {
-                        Toast.makeText(this.context, "수정 실패! :(", Toast.LENGTH_SHORT).show()
-                        notifyDataSetChanged()
-                    }
+//                    val result = db.updateTodo(tmp, position)
+//                    if (result) {
+//                        todo.title = titleToAdd.text.toString()
+//                        todo.description = descriptionToAdd.text.toString()
+//                        todo.due = dueToAdd.text.toString()
+//                        todo.finished = finishedToAdd.isChecked
+//
+//                        notifyDataSetChanged()
+//                        ime.hideSoftInputFromWindow(titleToAdd.windowToken, 0)
+//                    }
+//                    else {
+//                        Toast.makeText(this.context, "수정 실패! :(", Toast.LENGTH_SHORT).show()
+//                        notifyDataSetChanged()
+//                    }
+                    update(context, position, tmp)
+                    ime.hideSoftInputFromWindow(titleToAdd.windowToken, 0)
                 }
                 .setNegativeButton("취소") {_, _ ->
                     // Cancel Btn. Do nothing. Close keyboard.
@@ -119,15 +122,16 @@ class TodoListViewAdapter (context: Context, var resource: Int, var items: Mutab
 
         // OnClick Listener for X(delete) button on every ListView items
         delete.setOnClickListener {
-            val result = db.delTodo(position)
-            if (result) {
-                items.removeAt(position)
-                notifyDataSetChanged()
-            }
-            else {
-                Toast.makeText(this.context, "삭제 실패! :(", Toast.LENGTH_SHORT).show()
-                notifyDataSetChanged()
-            }
+//            val result = db.delTodo(position)
+//            if (result) {
+//                items.removeAt(position)
+//                notifyDataSetChanged()
+//            }
+//            else {
+//                Toast.makeText(this.context, "삭제 실패! :(", Toast.LENGTH_SHORT).show()
+//                notifyDataSetChanged()
+//            }
+            delete(context, position, items[position].uid!!)
         }
 
         return view
