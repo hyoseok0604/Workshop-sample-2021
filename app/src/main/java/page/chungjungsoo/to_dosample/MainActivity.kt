@@ -117,7 +117,7 @@ class MainActivity : AppCompatActivity() {
                 val datePickerDialog = DatePickerDialog(this,
                         { _, newYear, newMonth, newDay ->
                             year = newYear
-                            month = newMonth
+                            month = newMonth + 1
                             day = newDay
                         
                             timePickerDialog.show()

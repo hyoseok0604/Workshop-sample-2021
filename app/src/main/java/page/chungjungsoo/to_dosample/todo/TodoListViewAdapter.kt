@@ -74,11 +74,11 @@ class TodoListViewAdapter (context: Context, var resource: Int, var items: Mutab
                 val datePickerDialog = DatePickerDialog(context,
                     { _, newYear, newMonth, newDay ->
                         year = newYear
-                        month = newMonth
+                        month = newMonth + 1
                         day = newDay
 
                         timePickerDialog.show()
-                    }, year, month, day)
+                    }, year, month - 1, day)
 
                 datePickerDialog.show()
             }
